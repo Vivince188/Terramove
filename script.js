@@ -20,8 +20,8 @@ onValue(sensorRef1, (snapshot) => {
   const data = snapshot.val();
   if (data) {
     document.getElementById("tilt").innerText = data.tilt ?? "--";
-    document.getElementById("vibration").innerText = data.moisture ?? "--";
-    document.getElementById("rain").innerText = data.tilt ?? "--";
+    document.getElementById("vibration").innerText = data.vibration ?? "--";
+    document.getElementById("rain").innerText = data.rain ?? "--";
     document.getElementById("moisture").innerText = data.moisture ?? "--";
   }
 });
