@@ -14,12 +14,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const sensorRef = ref(database, "sensor");
+const sensorRef1 = ref(database, "sensor1");
 
-onValue(sensorRef, (snapshot) => {
+onValue(sensorRef1, (snapshot) => {
   const data = snapshot.val();
   if (data) {
     document.getElementById("tilt").innerText = data.tilt ?? "--";
+    document.getElementById("vibration").innerText = data.moisture ?? "--";
+    document.getElementById("rain").innerText = data.tilt ?? "--";
     document.getElementById("moisture").innerText = data.moisture ?? "--";
   }
 });
