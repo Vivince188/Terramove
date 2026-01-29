@@ -11,12 +11,14 @@ const firebaseConfig = {
   appId: "1:502743537596:web:da5487f58873630fa1fdb9"
 };
 
+/* ✅ Initialize Firebase AGAIN */
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+/* DOM */
 const display = document.getElementById("dataDisplay");
 
-/* Listen to TerraMove data */
+/* Listen for updates */
 const terramoveRef = ref(db, "terramove");
 
 onValue(terramoveRef, (snapshot) => {
@@ -34,11 +36,15 @@ onValue(terramoveRef, (snapshot) => {
           <div class="card-body">
             <h5 class="card-title">${unit.toUpperCase()}</h5>
 
-            <p><strong>Accel:</strong> X:${u.accel.x} Y:${u.accel.y} Z:${u.accel.z}</p>
-            <p><strong>Gyro:</strong> X:${u.gyro.x} Y:${u.gyro.y} Z:${u.gyro.z}</p>
+            <p><strong>Accel:</strong>
+              X:${u.accel.x} Y:${u.accel.y} Z:${u.accel.z}</p>
+
+            <p><strong>Gyro:</strong>
+              X:${u.gyro.x} Y:${u.gyro.y} Z:${u.gyro.z}</p>
+
             <p><strong>Vibration:</strong> ${u.vibration}</p>
             <p><strong>Tilt:</strong> ${u.tilt}</p>
-            <p><strong>Soil:</strong> ${u.soil.moisture}%</p>
+            <p><strong>Soil Moisture:</strong> ${u.soil.moisture}%</p>
             <p><strong>Rain:</strong> ${u.rain}</p>
 
             <p class="fw-bold text-danger">
