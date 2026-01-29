@@ -17,27 +17,37 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 /* 📦 Default Sensor Template */
-const defaultUnitData = {
-  accel: { x: 0, y: 0, z: 0 },
-  gyro: { x: 0, y: 0, z: 0 },
-  vibration: 0,
-  tilt: 0,
-  soil: {
-    raw: 0,
-    moisture: 0
-  },
-  rain: 0,
-  risk: 0
-};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-/* 🚀 Create 5 Sensor Units */
-function initializeTerraMoveDB() {
-  for (let i = 1; i <= 5; i++) {
-    const unitRef = ref(database, `terramove/unit${i}`);
-    set(unitRef, defaultUnitData);
-  }
-  console.log("✅ TerraMove database structure initialized");
+function createUnit() {
+  return {
+    accel: { x: 0, y: 0, z: 0 },
+    gyro: { x: 0, y: 0, z: 0 },
+    vibration: 0,
+    tilt: 0,
+    soil: { raw: 0, moisture: 0 },
+    rain: 0,
+    risk: 0
+  };
 }
 
-/* Run once */
-initializeTerraMoveDB();
+/* ✅ DEFINE function */
+function initializeTerraMoveDB() {
+  const terramoveData = {
+    terramove: {
+      unit1: createUnit(),
+      unit2: createUnit(),
+      unit3: createUnit(),
+      unit4: createUnit(),
+      unit5: createUnit()
+    }
+  };
+
+  update(ref(db), terramoveData)
+    .then(() => console.log("✅ TerraMove database initialized"))
+    .catch(err => console.error("❌ Firebase error:", err));
+}
+
+/* 🚨 EXPOSE to browser */
+window.initializeTerraMoveDB = initializeTerraMoveDB;
