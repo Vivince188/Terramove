@@ -48,7 +48,7 @@ onValue(terramoveRef, (snapshot) => {
             <p><strong>Rain:</strong> ${u.rain}</p>
 
             <p class="fw-bold text-danger">
-              Risk: ${u.risk}%
+              Risk Level: ${u.risk}
             </p>
           </div>
         </div>
