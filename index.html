@@ -2,46 +2,46 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TerraMove Dashboard</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+rel="stylesheet"
+>
 
 <style>
 
+/* Dark mode background */
+
 body{
-    background:#121212;
-    color:#ffffff;
+background:#121212;
+color:#ffffff;
 }
 
+/* Card styling */
+
 .card{
-    background:#1e1e1e;
-    border:1px solid #333;
-    color:white;
+background:#1e1e1e;
+border:none;
 }
 
 .card-title{
-    color:#00d4ff;
+color:#00d4ff;
 }
 
-.form-control{
-    background:#2a2a2a;
-    border:1px solid #444;
-    color:white;
+p{
+color:#e0e0e0;
 }
 
-.form-control::placeholder{
-    color:#aaa;
-}
+/* Simulator header */
 
-.form-control:focus{
-    background:#2a2a2a;
-    color:white;
-}
-
-#riskOutput{
-    font-size:1.3rem;
-    font-weight:bold;
+.card-header{
+font-weight:bold;
 }
 
 </style>
@@ -52,127 +52,18 @@ body{
 
 <div class="container my-4">
 
-<h1 class="text-center mb-4">🌍 TerraMove Monitoring Dashboard</h1>
+<h1 class="text-center mb-4">
+🌍 TerraMove Monitoring Dashboard
+</h1>
 
-<!-- MAIN GRID -->
-<div class="row g-3">
-
-    <!-- SENSOR UNITS -->
-    <div id="dataDisplay" class="row g-3 col-md-8"></div>
-
-    <!-- SIMULATOR -->
-    <div class="col-md-4">
-
-        <div class="card p-3 h-100">
-
-            <h5 class="text-center mb-3">⚠ Risk Simulator (Test Mode)</h5>
-
-            <div class="row g-2">
-
-                <div class="col-4">
-                    <input type="number" id="accelX" class="form-control form-control-sm" placeholder="Accel X">
-                </div>
-
-                <div class="col-4">
-                    <input type="number" id="accelY" class="form-control form-control-sm" placeholder="Accel Y">
-                </div>
-
-                <div class="col-4">
-                    <input type="number" id="accelZ" class="form-control form-control-sm" placeholder="Accel Z">
-                </div>
-
-                <div class="col-4">
-                    <input type="number" id="gyroX" class="form-control form-control-sm" placeholder="Gyro X">
-                </div>
-
-                <div class="col-4">
-                    <input type="number" id="gyroY" class="form-control form-control-sm" placeholder="Gyro Y">
-                </div>
-
-                <div class="col-4">
-                    <input type="number" id="gyroZ" class="form-control form-control-sm" placeholder="Gyro Z">
-                </div>
-
-                <div class="col-6">
-                    <input type="number" id="vibration" class="form-control form-control-sm" placeholder="Vibration">
-                </div>
-
-                <div class="col-6">
-                    <input type="number" id="tilt" class="form-control form-control-sm" placeholder="Tilt">
-                </div>
-
-                <div class="col-6">
-                    <input type="number" id="soilMoisture" class="form-control form-control-sm" placeholder="Soil Moisture">
-                </div>
-
-                <div class="col-6">
-                    <input type="number" id="rain" class="form-control form-control-sm" placeholder="Rain">
-                </div>
-
-            </div>
-
-            <button onclick="simulateRisk()" class="btn btn-warning w-100 mt-3">
-                Compute Risk
-            </button>
-
-            <div id="riskOutput" class="text-center mt-3">
-                Risk: -
-            </div>
-
-        </div>
-
-    </div>
+<!-- GRID CONTAINER -->
+<div id="dataDisplay" class="row g-3"></div>
 
 </div>
 
-</div>
-
-<!-- Firebase scripts -->
-<script type="module" src="initDatabase.js"></script>
+<!-- Firebase / Dashboard Script -->
 <script type="module" src="script.js"></script>
 
-<script>
-
-async function simulateRisk(){
-
-const data = {
-
-accelX:parseFloat(accelX.value)||0,
-accelY:parseFloat(accelY.value)||0,
-accelZ:parseFloat(accelZ.value)||0,
-
-gyroX:parseFloat(gyroX.value)||0,
-gyroY:parseFloat(gyroY.value)||0,
-gyroZ:parseFloat(gyroZ.value)||0,
-
-vibration:parseFloat(vibration.value)||0,
-tilt:parseFloat(tilt.value)||0,
-soilMoisture:parseFloat(soilMoisture.value)||0,
-rain:parseFloat(rain.value)||0
-
-};
-
-try{
-
-const response = await fetch("YOUR_FIREBASE_FUNCTION_URL",{
-method:"POST",
-headers:{ "Content-Type":"application/json" },
-body:JSON.stringify(data)
-});
-
-const result = await response.json();
-
-riskOutput.innerHTML = "Risk: " + result.riskLevel;
-
-}catch(err){
-
-riskOutput.innerHTML = "Error computing risk";
-
-}
-
-}
-
-</script>
-
 </body>
+
 </html>
