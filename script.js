@@ -66,7 +66,7 @@ onValue(terramoveRef, (snapshot) => {
             <div class="col-6"><input id="rain" class="form-control" placeholder="Rain"></div>
           </div>
           <button onclick="simulateRisk()" class="btn btn-info w-100 mt-3">Compute Risk</button>
-          <div class="mt-3 fw-bold">Result: <span id="riskResult">---</span></div>
+          <div class="mt-3 fw-bold">Result: <span id="riskResult" style="color:#00ffcc;">---</span></div>
         </div>
       </div>
     </div>
@@ -75,32 +75,54 @@ onValue(terramoveRef, (snapshot) => {
 
 // Local simulator computation
 window.simulateRisk = function() {
-  // Read values
-  const accelX = parseFloat(document.getElementById("ax").value) || 0;
-  const accelY = parseFloat(document.getElementById("ay").value) || 0;
-  const accelZ = parseFloat(document.getElementById("az").value) || 0;
-  const gyroX = parseFloat(document.getElementById("gx").value) || 0;
-  const gyroY = parseFloat(document.getElementById("gy").value) || 0;
-  const gyroZ = parseFloat(document.getElementById("gz").value) || 0;
+  
+  const ax = parseFloat(document.getElementById("ax").value) || 0;
+  const ay = parseFloat(document.getElementById("ay").value) || 0;
+  const az = parseFloat(document.getElementById("az").value) || 0;
+  const gx = parseFloat(document.getElementById("gx").value) || 0;
+  const gy = parseFloat(document.getElementById("gy").value) || 0;
+  const gz = parseFloat(document.getElementById("gz").value) || 0;
   const vibration = parseFloat(document.getElementById("vibration").value) || 0;
   const tilt = parseFloat(document.getElementById("tilt").value) || 0;
-  const moisture = parseFloat(document.getElementById("moisture").value) || 0;
+  const soilMoisture = parseFloat(document.getElementById("moisture").value) || 0;
   const rain = parseFloat(document.getElementById("rain").value) || 0;
 
-  // Simple risk logic
-  let score = 0;
+  // --- Formula from Cloud Function ---
+  const accelMag = Math.sqrt(ax*ax + ay*ay + az*az);
+  const fAccel = Math.min(Math.max(Math.abs(accelMag - 9.8)/5, 0), 1);
 
-  score += Math.abs(accelX) + Math.abs(accelY) + Math.abs(accelZ);
-  score += Math.abs(gyroX) + Math.abs(gyroY) + Math.abs(gyroZ);
-  score += vibration * 5;
-  score += tilt * 3;
-  score += moisture * 0.5;
-  score += rain * 0.5;
+  const gyroMag = Math.sqrt(gx*gx + gy*gy + gz*gz);
+  const fGyro = Math.min(Math.max(gyroMag/10, 0), 1);
 
-  let risk = "LOW";
-  if(score > 50) risk = "MEDIUM";
-  if(score > 100) risk = "HIGH";
-  if(score > 150) risk = "CRITICAL";
+  const fSoil = Math.min(Math.max((soilMoisture - 30)/50, 0), 1);
 
-  document.getElementById("riskResult").innerText = risk;
+  const wAccel = 0.2;
+  const wGyro = 0.2;
+  const wVib = 0.15;
+  const wTilt = 0.15;
+  const wSoil = 0.2;
+  const wRain = 0.1;
+
+  const riskFloat = (wAccel * fAccel) +
+                    (wGyro * fGyro) +
+                    (wVib * vibration) +
+                    (wTilt * tilt) +
+                    (wSoil * fSoil) +
+                    (wRain * rain);
+
+  let riskLevel = 0;
+  if (riskFloat < 0.25) riskLevel = 0;
+  else if (riskFloat < 0.5) riskLevel = 1;
+  else if (riskFloat < 0.75) riskLevel = 2;
+  else riskLevel = 3;
+
+  const riskText = ["LOW","MEDIUM","HIGH","CRITICAL"][riskLevel];
+  // --- Assign dynamic color ---
+  let color = "#00ff00";   // default LOW = light green
+  if(riskLevel === 1) color = "#ffff00";   // MEDIUM = yellow
+  if(riskLevel === 2) color = "#ff9900";   // HIGH = orange
+  if(riskLevel === 3) color = "#ff3333";   // CRITICAL = red
+  const riskSpan = document.getElementById("riskResult");
+  riskSpan.innerText = riskText;
+  riskSpan.style.color = color; // light blue-green
 };
