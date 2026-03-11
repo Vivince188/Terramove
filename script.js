@@ -65,6 +65,11 @@ onValue(terramoveRef, (snapshot) => {
             <div class="col-6"><input id="moisture" class="form-control" placeholder="Soil Moisture"></div>
             <div class="col-6"><input id="rain" class="form-control" placeholder="Rain"></div>
           </div>
+
+          <!-- Note for realistic inputs -->
+      <div class="text-warning small mt-2">
+        ⚠️ For realistic results, enter sensor-like values instead of 0.
+      </div>
           <button onclick="simulateRisk()" class="btn btn-info w-100 mt-3">Compute Risk</button>
           <div class="mt-3 fw-bold" style="color:#00ffcc;">Result: <span id="riskResult">---</span></div>
         </div>
