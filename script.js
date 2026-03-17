@@ -101,12 +101,12 @@ window.simulateRisk = function() {
 
   const fSoil = Math.min(Math.max((soilMoisture - 30)/50, 0), 1);
 
-  const wAccel = 0.2;
-  const wGyro = 0.2;
-  const wVib = 0.15;
-  const wTilt = 0.15;
-  const wSoil = 0.2;
-  const wRain = 0.1;
+  const wAccel = 0.05;
+  const wGyro = 0.15;
+  const wVib = 0.25;
+  const wTilt = 0.25;
+  const wSoil = 0.25;
+  const wRain = 0.05;
 
   const riskFloat = (wAccel * fAccel) +
                     (wGyro * fGyro) +
