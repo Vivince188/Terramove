@@ -131,3 +131,4 @@ window.simulateRisk = function() {
   riskSpan.innerText = riskText;
   riskSpan.style.color = color; // light blue-green
 };
+
