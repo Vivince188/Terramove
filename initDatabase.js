@@ -47,3 +47,4 @@ function initializeTerraMoveDB() {
 
 /* Expose to HTML */
 window.initializeTerraMoveDB = initializeTerraMoveDB;
+
